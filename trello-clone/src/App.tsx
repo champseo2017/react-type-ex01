@@ -3,6 +3,7 @@ import { Column } from "./Column";
 import { AddNewItem } from "./AddNewItem";
 import { Card } from "./Card";
 import { AppContainer } from "./styles";
+import { useAppState } from "./AppStateContext";
 interface State {
   count: number;
 }
@@ -10,6 +11,8 @@ interface Action {
   type: string;
 }
 function App() {
+  const { state } = useAppState();
+  console.log("state", state);
   return (
     <AppContainer>
       <Column text="To Do">

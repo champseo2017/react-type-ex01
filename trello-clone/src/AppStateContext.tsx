@@ -1,10 +1,18 @@
-import React, { createContext } from "react";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useReducer,
+  useContext,
+} from "react";
 interface AppStateContextProps {
   state: AppState;
 }
 const AppStateContext = createContext<AppStateContextProps>(
   {} as AppStateContextProps
 );
+export const useAppState = () => {
+  return useContext(AppStateContext);
+};
 interface Task {
   id: string;
   text: string;
@@ -35,4 +43,9 @@ const appData: AppState = {
       tasks: [{ id: "c3", text: "Begin to use static typing" }],
     },
   ],
+};
+
+export const AppStateProvider = ({ children }: PropsWithChildren<{}>) => {
+  const { Provider } = AppStateContext;
+  return <Provider value={{ state: appData }}>{children}</Provider>;
 };
