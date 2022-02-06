@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { map } from "lodash";
 import { Column } from "./Column";
 import { AddNewItem } from "./AddNewItem";
 import { Card } from "./Card";
@@ -12,18 +13,12 @@ interface Action {
 }
 function App() {
   const { state } = useAppState();
-  console.log("state", state);
+  const { lists } = state;
   return (
     <AppContainer>
-      <Column text="To Do">
-        <Card text="Generate app scaffold" />
-      </Column>
-      <Column text="In Progress">
-        <Card text="Learn Typescript" />
-      </Column>
-      <Column text="Done">
-        <Card text="Being to use static typing" />
-      </Column>
+      {map(lists, (list, i) => {
+        return <Column text={list.text} key={list.id} index={i} />;
+      })}
       <AddNewItem toggleButtonText="+ Add another list" onAdd={console.log} />
     </AppContainer>
   );
