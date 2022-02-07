@@ -4,6 +4,16 @@ import React, {
   useReducer,
   useContext,
 } from "react";
+
+type Action =
+  | {
+      type: "ADD_LIST";
+      payload: string;
+    }
+  | {
+      type: "ADD_TASK";
+      payload: { text: string; taskId: string };
+    };
 interface AppStateContextProps {
   state: AppState;
 }
@@ -44,7 +54,23 @@ const appData: AppState = {
     },
   ],
 };
-
+const appStateReducer = (state: AppState, action: Action): AppState => {
+  switch (action.type) {
+    case "ADD_LIST": {
+      // Reducer logic here
+      return { ...state };
+    }
+    case "ADD_TASK": {
+      // Reducer logic here
+      return {
+        ...state,
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+};
 export const AppStateProvider = ({ children }: PropsWithChildren<{}>) => {
   const { Provider } = AppStateContext;
   return <Provider value={{ state: appData }}>{children}</Provider>;
