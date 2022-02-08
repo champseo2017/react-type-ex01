@@ -3,6 +3,7 @@ import React, {
   PropsWithChildren,
   useReducer,
   useContext,
+  Dispatch,
 } from "react";
 
 type Action =
@@ -16,13 +17,12 @@ type Action =
     };
 interface AppStateContextProps {
   state: AppState;
+  dispatch: Dispatch<any>;
 }
 const AppStateContext = createContext<AppStateContextProps>(
   {} as AppStateContextProps
 );
-export const useAppState = () => {
-  return useContext(AppStateContext);
-};
+
 interface Task {
   id: string;
   text: string;
@@ -73,5 +73,10 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
 };
 export const AppStateProvider = ({ children }: PropsWithChildren<{}>) => {
   const { Provider } = AppStateContext;
-  return <Provider value={{ state: appData }}>{children}</Provider>;
+  const [state, dispatch] = useReducer(appStateReducer, appData);
+  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+};
+
+export const useAppState = () => {
+  return useContext(AppStateContext);
 };
