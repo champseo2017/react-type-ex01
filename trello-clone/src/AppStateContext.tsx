@@ -5,7 +5,7 @@ import React, {
   useContext,
   Dispatch,
 } from "react";
-
+import { nanoid } from "nanoid";
 type Action =
   | {
       type: "ADD_LIST";
@@ -58,7 +58,13 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case "ADD_LIST": {
       // Reducer logic here
-      return { ...state };
+      return {
+        ...state,
+        lists: [
+          ...state.lists,
+          { id: nanoid(), text: action.payload, tasks: [] },
+        ],
+      };
     }
     case "ADD_TASK": {
       // Reducer logic here
