@@ -12,14 +12,17 @@ interface Action {
   type: string;
 }
 function App() {
-  const { state } = useAppState();
+  const { state, dispatch } = useAppState();
   const { lists } = state;
   return (
     <AppContainer>
       {map(lists, (list, i) => {
-        return <Column text={list.text} key={list.id} index={i} />;
+        return <Column id={list.id} text={list.text} key={list.id} index={i} />;
       })}
-      <AddNewItem toggleButtonText="+ Add another list" onAdd={console.log} />
+      <AddNewItem
+        toggleButtonText="+ Add another list"
+        onAdd={(text) => dispatch({ type: "ADD_LIST", payload: text })}
+      />
     </AppContainer>
   );
 }

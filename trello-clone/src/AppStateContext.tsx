@@ -6,6 +6,7 @@ import React, {
   Dispatch,
 } from "react";
 import { nanoid } from "nanoid";
+import { findItemIndexById } from "./utils/findItemIndexById";
 type Action =
   | {
       type: "ADD_LIST";
@@ -67,7 +68,14 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
       };
     }
     case "ADD_TASK": {
-      // Reducer logic here
+      const targetLaneIndex = findItemIndexById(
+        state.lists,
+        action.payload.taskId
+      );
+      state.lists[targetLaneIndex].tasks.push({
+        id: nanoid(),
+        text: action.payload.text,
+      });
       return {
         ...state,
       };
