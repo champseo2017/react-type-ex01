@@ -6,8 +6,14 @@ import React, {
   Dispatch,
 } from "react";
 import { nanoid } from "nanoid";
+import { moveItem } from "./utils/moveItem";
 import { findItemIndexById } from "./utils/findItemIndexById";
+import { DragItem } from "./DragItem";
 type Action =
+  | {
+      type: "SET_DRAGGED_ITEM";
+      payload: DragItem | undefined;
+    }
   | {
       type: "ADD_LIST";
       payload: string;
@@ -20,6 +26,7 @@ type Action =
       type: "MOVE_LIST";
       payload: { dragIndex: number; hoverIndex: number };
     };
+
 interface AppStateContextProps {
   state: AppState;
   dispatch: Dispatch<any>;
@@ -38,9 +45,11 @@ interface List {
   tasks: Task[];
 }
 export interface AppState {
+  draggedItem: DragItem | undefined
   lists: List[];
 }
 const appData: AppState = {
+  draggedItem: undefined,
   lists: [
     {
       id: "0",
@@ -61,6 +70,9 @@ const appData: AppState = {
 };
 const appStateReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
+    case "SET_DRAGGED_ITEM": {
+      return { ...state, draggedItem: action.payload };
+    }
     case "ADD_LIST": {
       // Reducer logic here
       return {
@@ -83,6 +95,11 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
       };
+    }
+    case "MOVE_LIST": {
+      const { dragIndex, hoverIndex } = action.payload;
+      state.lists = moveItem(state.lists, dragIndex, hoverIndex);
+      return { ...state };
     }
     default: {
       return state;
