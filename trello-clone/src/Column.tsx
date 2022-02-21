@@ -1,10 +1,13 @@
 import React, { PropsWithChildren, useRef } from "react";
+import { isHidden } from "./utils/isHidden";
+import { useDrop } from "react-dnd";
 import { map } from "lodash";
 import { Card } from "./Card";
 import { AddNewItem } from "./AddNewItem";
 import { ColumnContainer, ColumnTitle } from "./styles";
 import { useAppState } from "./AppStateContext";
 import { useItemDrag } from "./useItemDrag";
+import { DragItem } from "./DragItem";
 interface ColumnProps {
   text: string;
   index: number;
@@ -14,10 +17,25 @@ export const Column = ({ text, index, id }: ColumnProps) => {
   const { state, dispatch } = useAppState();
   const ref = useRef<HTMLDivElement>(null);
   const { drag } = useItemDrag({ type: "COLUMN", id, index, text });
+  const [, drop] = useDrop({
+    accept: "COLUMN",
+    hover(item: DragItem) {
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      dispatch({ type: "MOVE_LIST", payload: { dragIndex, hoverIndex } });
+      item.index = hoverIndex;
+    },
+  });
   drag(ref);
   const { lists } = state;
   return (
-    <ColumnContainer ref={ref}>
+    <ColumnContainer
+      ref={ref}
+      isHidden={isHidden(state.draggedItem, "COLUMN", id)}
+    >
       <ColumnTitle>{text}</ColumnTitle>
       {map(lists[index].tasks, (task, index) => {
         return <Card text={task.text} key={task.id} index={index} />;
