@@ -82,3 +82,13 @@ export const CardContainer = styled.div`
   border-radius: 3px;
   box-shadow: #091e4240 0px 1px 0px 0px;
 `;
+
+export const CustomDragLayerContainer = styled.div`
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+`;
