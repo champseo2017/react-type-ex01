@@ -6,6 +6,7 @@ interface AddItemButtonProps {
 interface DragPreviewContainerProps {
   isHidden?: boolean;
 }
+// We used to have the dragged column opacity to be 0.3
 export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
   opacity: ${(props) => (props.isHidden ? 0.3 : 1)};
 `;

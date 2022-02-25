@@ -5,6 +5,7 @@ import { AddNewItem } from "./AddNewItem";
 import { Card } from "./Card";
 import { AppContainer } from "./styles";
 import { useAppState } from "./AppStateContext";
+import { CustomDragLayer } from "./CustomDragLayer";
 interface State {
   count: number;
 }
@@ -16,6 +17,7 @@ function App() {
   const { lists } = state;
   return (
     <AppContainer>
+      <CustomDragLayer />
       {map(lists, (list, i) => {
         return <Column id={list.id} text={list.text} key={list.id} index={i} />;
       })}
