@@ -5,10 +5,12 @@ interface AddItemButtonProps {
 // To implement this feature we’ll have to use a customDragLayer from react-dnd.
 interface DragPreviewContainerProps {
   isHidden?: boolean;
+  isPreview?: boolean;
 }
 // We used to have the dragged column opacity to be 0.3
 export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
-  opacity: ${(props) => (props.isHidden ? 0.3 : 1)};
+  transform: ${(props) => (props.isPreview ? "rotate(5deg)" : undefined)};
+  opacity: ${(props) => (props.isHidden ? 0 : 1)};
 `;
 export const AddItemButton = styled.button<AddItemButtonProps>`
   background-color: #ffffff3d;
@@ -67,6 +69,7 @@ export const ColumnContainer = styled(DragPreviewContainer)`
   border-radius: 3px;
   padding: 8px 8px;
   flex-grow: 0;
+  flex-shrink: 0;
 `;
 
 export const ColumnTitle = styled.div`
@@ -74,7 +77,7 @@ export const ColumnTitle = styled.div`
   font-weight: bold;
 `;
 
-export const CardContainer = styled.div`
+export const CardContainer = styled(DragPreviewContainer)`
   background-color: #fff;
   cursor: pointer;
   margin-bottom: 0.5rem;

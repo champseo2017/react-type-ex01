@@ -17,7 +17,6 @@ interface ColumnProps {
 export const Column = ({ text, index, id, isPreview }: ColumnProps) => {
   const { state, dispatch } = useAppState();
   const ref = useRef<HTMLDivElement>(null);
-  const { drag } = useItemDrag({ type: "COLUMN", id, index, text });
   const [, drop] = useDrop({
     accept: "COLUMN",
     hover(item: DragItem) {
@@ -30,12 +29,14 @@ export const Column = ({ text, index, id, isPreview }: ColumnProps) => {
       item.index = hoverIndex;
     },
   });
-  drag(ref);
+  const { drag } = useItemDrag({ type: "COLUMN", id, index, text });
+  drag(drop(ref));
   const { lists } = state;
   return (
     <ColumnContainer
       ref={ref}
       isHidden={isHidden(isPreview, state.draggedItem, "COLUMN", id)}
+      isPreview={isPreview}
     >
       <ColumnTitle>{text}</ColumnTitle>
       {map(lists[index].tasks, (task, index) => {

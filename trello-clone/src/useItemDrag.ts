@@ -5,7 +5,6 @@ import { useAppState } from "./AppStateContext";
 import { DragItem } from "./DragItem";
 
 export const useItemDrag = (item: DragItem) => {
-  console.log("item", item);
   const { dispatch } = useAppState();
   const [, drag, preview] = useDrag({
     item,
